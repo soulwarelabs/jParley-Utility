@@ -195,7 +195,7 @@ public class DataManager {
             if (parameter.isOutput()) {
                 Integer sqlType = parameter.getSqlType();
                 String structName = parameter.getStructName();
-                statement.setOutput(key, sqlType, structName);
+                statement.output(key, sqlType, structName);
             }
         }
     }
@@ -217,7 +217,7 @@ public class DataManager {
         for (Key key : _mappings.keySet()) {
             Parameter parameter = _mappings.get(key);
             if (parameter.isOutput()) {
-                Object output = statement.readOutput(key);
+                Object output = statement.read(key);
                 Converter decoder = parameter.getDecoder();
                 if (decoder != null) {
                     output = decoder.process(connection, output);

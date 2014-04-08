@@ -3,7 +3,7 @@
  * Outline:  jParley framework utility components
  *
  * File:     ParameterKey.java
- * Folder:   /.../com/soulwarelabs/jparley/core
+ * Folder:   /.../com/soulwarelabs/jparley/utility
  * Revision: 1.03, 08 April 2014
  * Created:  10 February 2014
  * Author:   Ilya Gubarev
@@ -25,48 +25,41 @@
  */
 package com.soulwarelabs.jparley.utility;
 
+import java.io.Serializable;
+
 /**
  * SQL subroutine parameter key.
- *
- * @see Parameter
- * @see ParameterValue
  *
  * @since v1.0
  *
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public final class Key {
+public class Key implements Serializable {
 
-    private final Integer _index;
-    private final String _name;
-
-    private String _textCached;
+    private Integer index;
+    private String name;
 
     /**
      * Creates a new instance of parameter key.
      *
      * @param index a value of an index-based key.
-     * @throws IllegalArgumentException if specified index is illegal.
      *
      * @since v1.0
      */
     public Key(int index) {
-        _index = index;
-        _name = null;
+        this.index = index;
     }
 
     /**
      * Creates a new instance of parameter key.
      *
      * @param name a value of a name-based key.
-     * @throws IllegalArgumentException if specified name is null.
      *
      * @since v1.0
      */
     public Key(String name) {
-        _index = null;
-        _name = name;
+        this.name = name;
     }
 
     /**
@@ -77,7 +70,7 @@ public final class Key {
      * @since v1.0
      */
     public Integer getIndex() {
-        return _index;
+        return index;
     }
 
     /**
@@ -88,7 +81,7 @@ public final class Key {
      * @since v1.0
      */
     public String getName() {
-        return _name;
+        return name;
     }
 
     /**
@@ -99,7 +92,7 @@ public final class Key {
      * @since v1.0
      */
     public boolean isIndexBased() {
-        return _index != null;
+        return index != null;
     }
 
     /**
@@ -110,7 +103,7 @@ public final class Key {
      * @since v1.0
      */
     public boolean isNameBased() {
-        return _name != null;
+        return name != null;
     }
 
     @Override
@@ -122,12 +115,11 @@ public final class Key {
             return false;
         }
         Key other = (Key) object;
-        Integer index = other.getIndex();
-        String name = other.getName();
-        if ((_index != index) && (_index == null || !_index.equals(index))) {
+        if ((index != other.index) &&
+                (index == null || !index.equals(other.index))) {
             return false;
         }
-        if ((_name == null) ? (name != null) : !_name.equals(name)) {
+        if ((name == null) ? (other.name != null) : !name.equals(other.name)) {
             return false;
         }
         return true;
@@ -136,20 +128,17 @@ public final class Key {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 71 * hash + (_index != null ? _index.hashCode() : 0);
-        hash = 71 * hash + (_name != null ? _name.hashCode() : 0);
+        hash = 71 * hash + (index != null ? index.hashCode() : 0);
+        hash = 71 * hash + (name != null ? name.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        if (_textCached == null) {
-            if (_name == null) {
-                _textCached = String.format("%d (index-based)", _index);
-            } else {
-                _textCached = String.format("%s (name-based)", _name);
-            }
+        if (name == null) {
+            return String.format("{index: %d}", index);
+        } else {
+            return String.format("{name: %s}", name);
         }
-        return _textCached;
     }
 }
