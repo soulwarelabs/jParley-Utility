@@ -3,7 +3,7 @@
  * Outline:  jParley framework utility components
  *
  * File:     ParameterValue.java
- * Folder:   /.../com/soulwarelabs/jparley/core
+ * Folder:   /.../com/soulwarelabs/jparley/utility
  * Revision: 1.03, 08 April 2014
  * Created:  10 February 2014
  * Author:   Ilya Gubarev
@@ -28,6 +28,7 @@ package com.soulwarelabs.jparley.utility;
 import java.io.Serializable;
 
 import com.soulwarelabs.jcommons.Box;
+import com.soulwarelabs.jcommons.Optional;
 
 /**
  * Parameter value container.
@@ -59,7 +60,7 @@ public class Value implements Box, Serializable {
      *
      * @since v1.0
      */
-    public Value(Object value) {
+    public Value(@Optional Object value) {
         this.value = value;
     }
 
