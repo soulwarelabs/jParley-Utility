@@ -25,62 +25,56 @@
  */
 package com.soulwarelabs.jparley.utility;
 
+import java.io.Serializable;
+
 import com.soulwarelabs.jcommons.Box;
 
 /**
  * Parameter value container.
  *
  * @see Box
- * @see Parameter
- * @see ParameterKey
  *
  * @since v1.0
  *
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public class ParameterValue implements Box {
+public class Value implements Box, Serializable {
 
-    private Object _value;
+    private Object value;
 
     /**
      * Creates a new instance of value container.
      *
      * @since v1.0
      */
-    public ParameterValue() {
-        this(null);
+    public Value() {
+
     }
 
     /**
      * Creates a new instance of value container.
      *
-     * @param value parameter value (optional).
+     * @param value parameter value.
      *
      * @since v1.0
      */
-    public ParameterValue(Object value) {
-        _value = value;
+    public Value(Object value) {
+        this.value = value;
     }
 
     @Override
     public Object getValue() {
-        return _value;
+        return value;
     }
 
-    /**
-     * Sets a new parameter value.
-     *
-     * @param value parameter value (optional).
-     *
-     * @since v1.0
-     */
+    @Override
     public void setValue(Object value) {
-        _value = value;
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return String.format("%s", _value);
+        return String.format("%s", value);
     }
 }

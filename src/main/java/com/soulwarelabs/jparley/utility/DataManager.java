@@ -115,7 +115,7 @@ public class DataManager {
     public void setInput(ParameterKey key, Object value, Integer sqlType, Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(true);
-        parameter.setValue(new ParameterValue(value));
+        parameter.setValue(new Value(value));
         parameter.setSqlType(sqlType);
         parameter.setEncoder(encoder);
         merge(key, parameter);
@@ -136,10 +136,10 @@ public class DataManager {
      *
      * @since v1.0
      */
-    public ParameterValue setOutput(ParameterKey key, Integer sqlType, String structName, Converter decoder) {
+    public Value setOutput(ParameterKey key, Integer sqlType, String structName, Converter decoder) {
         Parameter parameter = new Parameter();
         parameter.setOutput(true);
-        parameter.setValue(new ParameterValue());
+        parameter.setValue(new Value());
         parameter.setSqlType(sqlType);
         parameter.setStructName(structName);
         parameter.setDecoder(decoder);

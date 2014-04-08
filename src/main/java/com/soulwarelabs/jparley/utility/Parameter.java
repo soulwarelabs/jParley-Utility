@@ -46,7 +46,7 @@ public final class Parameter {
     private boolean _output;
     private Integer _sqlType;
     private String _structName;
-    private ParameterValue _value;
+    private Value _value;
 
     /**
      * Creates a new instance of SQL subroutine parameter.
@@ -136,7 +136,7 @@ public final class Parameter {
      *
      * @since v1.0
      */
-    public ParameterValue getValue() {
+    public Value getValue() {
         return _value;
     }
 
@@ -219,7 +219,7 @@ public final class Parameter {
      *
      * @since v1.0
      */
-    public void setValue(ParameterValue value) {
+    public void setValue(Value value) {
         _value = value;
     }
 
