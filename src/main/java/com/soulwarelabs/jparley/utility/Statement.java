@@ -3,7 +3,7 @@
  * Outline:  jParley framework utility components
  *
  * File:     Statement.java
- * Folder:   /.../com/soulwarelabs/jparley/core
+ * Folder:   /.../com/soulwarelabs/jparley/utility
  * Revision: 1.06, 08 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
@@ -29,6 +29,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.soulwarelabs.jcommons.Optional;
+
 /**
  * Extended SQL callable statement.
  *
@@ -39,13 +41,13 @@ import java.sql.SQLException;
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public final class Statement {
+public class Statement {
 
     /**
      * Creates a new callable statement for an SQL function.
      *
-     * @param connection an SQL database connection.
-     * @param name full qualified name of an SQL subroutine.
+     * @param connection SQL database connection.
+     * @param name full-qualified name of an SQL subroutine.
      * @param parametersNumber total number of subroutine parameters.
      * @return extended callable statement.
      * @throws SQLException if error occurs while creating statement.
@@ -64,8 +66,8 @@ public final class Statement {
     /**
      * Creates a new callable statement for an SQL procedure.
      *
-     * @param connection an SQL database connection.
-     * @param name full qualified name of an SQL subroutine.
+     * @param connection SQL database connection.
+     * @param name full-qualified name of an SQL subroutine.
      * @param parametersNumber total number of subroutine parameters.
      * @return extended callable statement.
      * @throws SQLException if error occurs while creating statement.
@@ -89,12 +91,12 @@ public final class Statement {
         return result;
     }
 
-    private final CallableStatement _base;
-    private final String _sql;
+    private CallableStatement base;
+    private String sql;
 
     private Statement(Connection connection, String sql) throws SQLException {
-        _base = connection.prepareCall(sql);
-        _sql = sql;
+        base = connection.prepareCall(sql);
+        this.sql = sql;
     }
 
     /**
@@ -107,7 +109,7 @@ public final class Statement {
      * @since v1.0
      */
     public CallableStatement getBaseStatement() {
-        return _base;
+        return base;
     }
 
     /**
@@ -118,7 +120,7 @@ public final class Statement {
      * @since v1.0
      */
     public String getSql() {
-        return _sql;
+        return sql;
     }
 
     /**
@@ -129,53 +131,34 @@ public final class Statement {
      * @since v1.0
      */
     public void execute() throws SQLException {
-        _base.execute();
-    }
-
-    /**
-     * Reads an output parameter value from the statement.
-     *
-     * @param key parameter key.
-     * @return parameter value (optional).
-     * @throws SQLException if error occurs while reading parameter value.
-     *
-     * @see ParameterKey
-     *
-     * @since v1.0
-     */
-    public Object readOutput(ParameterKey key) throws SQLException {
-        if (key.isIndexBased()) {
-            return _base.getObject(key.getIndex());
-        } else {
-            return _base.getObject(key.getName());
-        }
+        base.execute();
     }
 
     /**
      * Registers an input parameter into the statement.
      *
      * @param key parameter key.
-     * @param input parameter initial value (optional).
-     * @param sqlType parameter SQL type code (optional).
+     * @param value parameter initial value.
+     * @param type parameter SQL type code.
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @see ParameterKey
+     * @see Key
      *
      * @since v1.0
      */
-    public void setInput(ParameterKey key, Object input, Integer sqlType)
+    public void input(Key key, @Optional Object value, @Optional Integer type)
             throws SQLException {
         if (key.isIndexBased()) {
-            if (sqlType == null) {
-                _base.setObject(key.getIndex(), input);
+            if (type == null) {
+                base.setObject(key.getIndex(), value);
             } else {
-                _base.setObject(key.getIndex(), input, sqlType);
+                base.setObject(key.getIndex(), value, type);
             }
         } else {
-            if (sqlType == null) {
-                _base.setObject(key.getName(), input);
+            if (type == null) {
+                base.setObject(key.getName(), value);
             } else {
-                _base.setObject(key.getName(), input, sqlType);
+                base.setObject(key.getName(), value, type);
             }
         }
     }
@@ -184,33 +167,52 @@ public final class Statement {
      * Registers an output parameter into the statement.
      *
      * @param key parameter key.
-     * @param sqlType parameter SQL type code (optional).
-     * @param structName parameter structured type name (optional).
+     * @param type parameter SQL type code.
+     * @param struct parameter structured type name.
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @see ParameterKey
+     * @see Key
      *
      * @since v1.0
      */
-    public void setOutput(ParameterKey key, int sqlType, String structName)
+    public void output(Key key, int type, @Optional String struct)
             throws SQLException {
         if (key.isIndexBased()) {
-            if (structName == null) {
-                _base.registerOutParameter(key.getIndex(), sqlType);
+            if (struct == null) {
+                base.registerOutParameter(key.getIndex(), type);
             } else {
-                _base.registerOutParameter(key.getIndex(), sqlType, structName);
+                base.registerOutParameter(key.getIndex(), type, struct);
             }
         } else {
-            if (structName == null) {
-                _base.registerOutParameter(key.getName(), sqlType);
+            if (struct == null) {
+                base.registerOutParameter(key.getName(), type);
             } else {
-                _base.registerOutParameter(key.getName(), sqlType, structName);
+                base.registerOutParameter(key.getName(), type, struct);
             }
+        }
+    }
+
+    /**
+     * Reads an output parameter value from the statement.
+     *
+     * @param key parameter key.
+     * @return parameter value.
+     * @throws SQLException if error occurs while reading parameter value.
+     *
+     * @see Key
+     *
+     * @since v1.0
+     */
+    public @Optional Object read(Key key) throws SQLException {
+        if (key.isIndexBased()) {
+            return base.getObject(key.getIndex());
+        } else {
+            return base.getObject(key.getName());
         }
     }
 
     @Override
     public String toString() {
-        return _sql;
+        return String.format("{sql: %s}", sql);
     }
 }

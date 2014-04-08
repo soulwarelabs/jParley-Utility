@@ -36,7 +36,7 @@ package com.soulwarelabs.jparley.utility;
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public final class ParameterKey {
+public final class Key {
 
     private final Integer _index;
     private final String _name;
@@ -51,7 +51,7 @@ public final class ParameterKey {
      *
      * @since v1.0
      */
-    public ParameterKey(int index) {
+    public Key(int index) {
         _index = index;
         _name = null;
     }
@@ -64,7 +64,7 @@ public final class ParameterKey {
      *
      * @since v1.0
      */
-    public ParameterKey(String name) {
+    public Key(String name) {
         _index = null;
         _name = name;
     }
@@ -121,7 +121,7 @@ public final class ParameterKey {
         if (getClass() != object.getClass()) {
             return false;
         }
-        ParameterKey other = (ParameterKey) object;
+        Key other = (Key) object;
         Integer index = other.getIndex();
         String name = other.getName();
         if ((_index != index) && (_index == null || !_index.equals(index))) {

@@ -42,7 +42,7 @@ import com.soulwarelabs.jparley.Converter;
  */
 public class DataManager {
 
-    private final Map<ParameterKey, Parameter> _mappings;
+    private final Map<Key, Parameter> _mappings;
 
     /**
      * Creates a new instance of data manager.
@@ -50,7 +50,7 @@ public class DataManager {
      * @since v1.0
      */
     public DataManager() {
-        _mappings = new LinkedHashMap<ParameterKey, Parameter>();
+        _mappings = new LinkedHashMap<Key, Parameter>();
     }
 
     /**
@@ -64,7 +64,7 @@ public class DataManager {
      *
      * @since v1.0
      */
-    public Parameter getParameter(ParameterKey key) {
+    public Parameter getParameter(Key key) {
         return _mappings.get(key);
     }
 
@@ -89,7 +89,7 @@ public class DataManager {
     public StringBuilder getPrintedState() {
         int index = 1;
         StringBuilder result = new StringBuilder();
-        for (ParameterKey key : _mappings.keySet()) {
+        for (Key key : _mappings.keySet()) {
             result.append(String.format("%s = %s", key, _mappings.get(key)));
             if (index < _mappings.size()) {
                 result.append(", ");
@@ -112,7 +112,7 @@ public class DataManager {
      *
      * @since v1.0
      */
-    public void setInput(ParameterKey key, Object value, Integer sqlType, Converter encoder) {
+    public void setInput(Key key, Object value, Integer sqlType, Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(true);
         parameter.setValue(new Value(value));
@@ -136,7 +136,7 @@ public class DataManager {
      *
      * @since v1.0
      */
-    public Value setOutput(ParameterKey key, Integer sqlType, String structName, Converter decoder) {
+    public Value setOutput(Key key, Integer sqlType, String structName, Converter decoder) {
         Parameter parameter = new Parameter();
         parameter.setOutput(true);
         parameter.setValue(new Value());
@@ -155,7 +155,7 @@ public class DataManager {
      *
      * @since v1.0
      */
-    public void remove(ParameterKey key) {
+    public void remove(Key key) {
         _mappings.remove(key);
     }
 
@@ -182,7 +182,7 @@ public class DataManager {
      */
     public void setupAll(Connection connection, Statement statement)
             throws SQLException {
-        for (ParameterKey key : _mappings.keySet()) {
+        for (Key key : _mappings.keySet()) {
             Parameter parameter = _mappings.get(key);
             if (parameter.isInput()) {
                 Object value = parameter.getValue().getValue();
@@ -190,7 +190,7 @@ public class DataManager {
                 if (encoder != null) {
                     value = encoder.process(connection, value);
                 }
-                statement.setInput(key, value, parameter.getSqlType());
+                statement.input(key, value, parameter.getSqlType());
             }
             if (parameter.isOutput()) {
                 Integer sqlType = parameter.getSqlType();
@@ -214,7 +214,7 @@ public class DataManager {
      */
     public void parseAll(Connection connection, Statement statement)
             throws SQLException {
-        for (ParameterKey key : _mappings.keySet()) {
+        for (Key key : _mappings.keySet()) {
             Parameter parameter = _mappings.get(key);
             if (parameter.isOutput()) {
                 Object output = statement.readOutput(key);
@@ -232,7 +232,7 @@ public class DataManager {
         return "data manager";
     }
 
-    private Parameter merge(ParameterKey key, Parameter parameter) {
+    private Parameter merge(Key key, Parameter parameter) {
         Parameter result = _mappings.get(key);
         if (result == null) {
             _mappings.put(key, parameter);
