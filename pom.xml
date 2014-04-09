@@ -6,11 +6,11 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.02, 08 April 2014
-    Created:  14 February 2014
+    Revision: 1.03, 08 April 2014
+    Created:  09 February 2014
     Author:   Ilya Gubarev
 
-    Copyright (c) 2013-2014 Soulware Labs, Ltd.
+    Copyright (c) 2014 Soulware Labs, Ltd.
     Contact information is available at http://www.soulwarelabs.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,6 +93,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${versions.plugins.compiler}</version>
                 <configuration>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <source>${versions.java.source}</source>
                     <target>${versions.java.target}</target>
                 </configuration>

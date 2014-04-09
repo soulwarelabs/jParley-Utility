@@ -3,8 +3,8 @@
  * Outline:  jParley framework utility components
  *
  * File:     Parameter.java
- * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.07, 08 April 2014
+ * Folder:   /.../com/soulwarelabs/jparley/utility
+ * Revision: 1.09, 08 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -25,28 +25,28 @@
  */
 package com.soulwarelabs.jparley.utility;
 
+import java.io.Serializable;
+
+import com.soulwarelabs.jcommons.Optional;
+
 import com.soulwarelabs.jparley.Converter;
 
 /**
  * SQL subroutine parameter.
- *
- * @see ParameterKey
- * @see ParameterValue
  *
  * @since v1.0
  *
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public final class Parameter {
+public class Parameter implements Serializable {
 
-    private Converter _decoder;
-    private Converter _encoder;
-    private boolean _input;
-    private boolean _output;
-    private Integer _sqlType;
-    private String _structName;
-    private Value _value;
+    private @Optional Converter decoder;
+    private @Optional Converter encoder;
+    private @Optional Value input;
+    private @Optional Value output;
+    private @Optional String struct;
+    private @Optional Integer type;
 
     /**
      * Creates a new instance of SQL subroutine parameter.
@@ -60,191 +60,153 @@ public final class Parameter {
     /**
      * Gets an SQL output data decoder of the parameter.
      *
-     * @return output data decoder (optional).
+     * @return SQL output data decoder.
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public Converter getDecoder() {
-        return _decoder;
-    }
-
-    /**
-     * Gets an SQL input data encoder of the parameter.
-     *
-     * @return input data encoder (optional).
-     *
-     * @see Converter
-     *
-     * @since v1.0
-     */
-    public Converter getEncoder() {
-        return _encoder;
-    }
-
-    /**
-     * Checks if the parameter is input.
-     *
-     * @return true if the parameter is input.
-     *
-     * @since v1.0
-     */
-    public boolean isInput() {
-        return _input;
-    }
-
-    /**
-     * Checks if the parameter is output.
-     *
-     * @return true if the parameter is output.
-     *
-     * @since v1.0
-     */
-    public boolean isOutput() {
-        return _output;
-    }
-
-    /**
-     * Gets an SQL type code of the parameter.
-     *
-     * @return an SQL type code (optional).
-     *
-     * @since v1.0
-     */
-    public Integer getSqlType() {
-        return _sqlType;
-    }
-
-    /**
-     * Gets a name of a structured type of the parameter.
-     *
-     * @return a structured type name (optional).
-     *
-     * @since v1.0
-     */
-    public String getStructName() {
-        return _structName;
-    }
-
-    /**
-     * Gets parameter value container.
-     *
-     * @return a value container.
-     *
-     * @see ParameterValue
-     *
-     * @since v1.0
-     */
-    public Value getValue() {
-        return _value;
+    public @Optional Converter getDecoder() {
+        return decoder;
     }
 
     /**
      * Sets a new SQL output data decoder for the parameter.
      *
-     * @param decoder output data decoder (optional).
+     * @param decoder SQL output data decoder.
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public void setDecoder(Converter decoder) {
-        _decoder = decoder;
+    public void setDecoder(@Optional Converter decoder) {
+        this.decoder = decoder;
+    }
+
+    /**
+     * Gets an SQL input data encoder of the parameter.
+     *
+     * @return SQL input data encoder.
+     *
+     * @see Converter
+     *
+     * @since v1.0
+     */
+    public @Optional Converter getEncoder() {
+        return encoder;
     }
 
     /**
      * Sets a new SQL input data encoder for the parameter.
      *
-     * @param encoder input data encoder (optional).
+     * @param encoder SQL input data encoder.
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public void setEncoder(Converter encoder) {
-        _encoder = encoder;
+    public void setEncoder(@Optional Converter encoder) {
+        this.encoder = encoder;
     }
 
     /**
-     * Changes an input status of the parameter.
+     * Gets a boxed input value of the parameter.
      *
-     * @param input true if the parameter is input.
+     * @return boxed input value.
+     *
+     * @see Value
      *
      * @since v1.0
      */
-    public void setInput(boolean input) {
-        _input = input;
+    public @Optional Value getInput() {
+        return input;
     }
 
     /**
-     * Changes an output status of the parameter.
+     * Sets a new boxed input value for the parameter.
      *
-     * @param output true if the parameter is output.
+     * @param input boxed input value.
+     *
+     * @see Value
      *
      * @since v1.0
      */
-    public void setOutput(boolean output) {
-        _output = output;
+    public void setInput(@Optional Value input) {
+        this.input = input;
+    }
+
+    /**
+     * Gets a boxed output value of the parameter.
+     *
+     * @return boxed output value.
+     *
+     * @see Value
+     *
+     * @since v1.0
+     */
+    public @Optional Value getOutput() {
+        return output;
+    }
+
+    /**
+     * Sets a new boxed output value for the parameter.
+     *
+     * @param output boxed output value.
+     *
+     * @see Value
+     *
+     * @since v1.0
+     */
+    public void setOutput(@Optional Value output) {
+        this.output = output;
+    }
+
+    /**
+     * Gets an SQL structure name of the parameter.
+     *
+     * @return SQL structure name.
+     *
+     * @since v1.0
+     */
+    public @Optional String getStruct() {
+        return struct;
+    }
+
+    /**
+     * Sets a new SQL structure name for the parameter.
+     *
+     * @param struct SQL structure name.
+     *
+     * @since v1.0
+     */
+    public void setStruct(@Optional String struct) {
+        this.struct = struct;
+    }
+
+    /**
+     * Gets an SQL type code of the parameter.
+     *
+     * @return SQL type code.
+     *
+     * @since v1.0
+     */
+    public @Optional Integer getType() {
+        return type;
     }
 
     /**
      * Sets a new SQL type code for the parameter.
      *
-     * @param sqlType an SQL type code (optional).
+     * @param type SQL type code.
      *
      * @since v1.0
      */
-    public void setSqlType(Integer sqlType) {
-        _sqlType = sqlType;
-    }
-
-    /**
-     * Sets a new structured type name for the parameter.
-     *
-     * @param structName a structured type name (optional).
-     *
-     * @since v1.0
-     */
-    public void setStructName(String structName) {
-        _structName = structName;
-    }
-
-    /**
-     * Sets a new parameter value container.
-     *
-     * @param value a value container.
-     *
-     * @see ParameterValue
-     *
-     * @since v1.0
-     */
-    public void setValue(Value value) {
-        _value = value;
-    }
-
-    /**
-     * Merges the parameter with another one.
-     *
-     * @param another a parameter to merge with.
-     *
-     * @since v1.0
-     */
-    public void merge(Parameter another) {
-        // TODO: add merging errors checking
-        _decoder = another._decoder;
-        _encoder = another._encoder;
-        _input = _input || another._input;
-        _output = _output || another._output;
-        _sqlType = another._sqlType;
-        _structName = another._structName;
-        if (another._input) {
-            _value.setValue(another.getValue().getValue());
-        }
+    public void setType(@Optional Integer type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return String.format("%s (%d/%s)", _value, _sqlType, _structName);
+        return String.format("%s/%s (%s/%s)", input, output, type, struct);
     }
 }

@@ -2,13 +2,13 @@
  * Project:  jParley-Utility
  * Outline:  jParley framework utility components
  *
- * File:     ParameterValue.java
+ * File:     Value.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.03, 08 April 2014
- * Created:  10 February 2014
+ * Revision: 1.01, 08 April 2014
+ * Created:  07 February 2014
  * Author:   Ilya Gubarev
  *
- * Copyright (c) 2013-2014 Soulware Labs, Ltd.
+ * Copyright (c) 2014 Soulware Labs, Ltd.
  * Contact information is available at http://www.soulwarelabs.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,7 @@
  */
 package com.soulwarelabs.jparley.utility;
 
-import java.io.Serializable;
-
 import com.soulwarelabs.jcommons.Box;
-import com.soulwarelabs.jcommons.Optional;
 
 /**
  * Parameter value container.
@@ -40,9 +37,7 @@ import com.soulwarelabs.jcommons.Optional;
  * @author Ilya Gubarev
  * @version 08 April 2014
  */
-public class Value implements Box, Serializable {
-
-    private Object value;
+public class Value extends Box<Object> {
 
     /**
      * Creates a new instance of value container.
@@ -56,26 +51,11 @@ public class Value implements Box, Serializable {
     /**
      * Creates a new instance of value container.
      *
-     * @param value parameter value.
+     * @param value boxed value.
      *
      * @since v1.0
      */
-    public Value(@Optional Object value) {
-        this.value = value;
-    }
-
-    @Override
-    public Object getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s", value);
+    public Value(Object value) {
+        super(value);
     }
 }

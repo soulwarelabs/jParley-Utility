@@ -60,7 +60,7 @@ public class Statement {
             int parametersNumber) throws SQLException {
         StringBuilder parameters = createParameterString(parametersNumber - 1);
         String sql = String.format("{? = call %s(%s)}", name, parameters);
-        return new Statement(connection, sql);
+        return new Statement(connection.prepareCall(sql), sql);
     }
 
     /**
@@ -80,7 +80,7 @@ public class Statement {
             int parametersNumber) throws SQLException {
         StringBuilder parameters = createParameterString(parametersNumber);
         String sql = String.format("{call %s(%s)}", name, parameters);
-        return new Statement(connection, sql);
+        return new Statement(connection.prepareCall(sql), sql);
     }
 
     private static StringBuilder createParameterString(int number) {
@@ -94,15 +94,15 @@ public class Statement {
     private CallableStatement base;
     private String sql;
 
-    private Statement(Connection connection, String sql) throws SQLException {
-        base = connection.prepareCall(sql);
+    private Statement(CallableStatement base, String sql) throws SQLException {
+        this.base = base;
         this.sql = sql;
     }
 
     /**
      * Gets an underlying SQL callable statement.
      *
-     * @return the underlying callable statement.
+     * @return underlying callable statement.
      *
      * @see CallableStatement
      *
@@ -148,17 +148,18 @@ public class Statement {
      */
     public void input(Key key, @Optional Object value, @Optional Integer type)
             throws SQLException {
-        if (key.isIndexBased()) {
+        Object keyValue = key.getValue();
+        if (keyValue instanceof Integer) {
             if (type == null) {
-                base.setObject(key.getIndex(), value);
+                base.setObject((Integer) keyValue, value);
             } else {
-                base.setObject(key.getIndex(), value, type);
+                base.setObject((Integer) keyValue, value, type);
             }
         } else {
             if (type == null) {
-                base.setObject(key.getName(), value);
+                base.setObject((String) keyValue, value);
             } else {
-                base.setObject(key.getName(), value, type);
+                base.setObject((String) keyValue, value, type);
             }
         }
     }
@@ -177,17 +178,18 @@ public class Statement {
      */
     public void output(Key key, int type, @Optional String struct)
             throws SQLException {
-        if (key.isIndexBased()) {
+        Object keyValue = key.getValue();
+        if (keyValue instanceof Integer) {
             if (struct == null) {
-                base.registerOutParameter(key.getIndex(), type);
+                base.registerOutParameter((Integer) keyValue, type);
             } else {
-                base.registerOutParameter(key.getIndex(), type, struct);
+                base.registerOutParameter((Integer) keyValue, type, struct);
             }
         } else {
             if (struct == null) {
-                base.registerOutParameter(key.getName(), type);
+                base.registerOutParameter((String) keyValue, type);
             } else {
-                base.registerOutParameter(key.getName(), type, struct);
+                base.registerOutParameter((String) keyValue, type, struct);
             }
         }
     }
@@ -204,15 +206,11 @@ public class Statement {
      * @since v1.0
      */
     public @Optional Object read(Key key) throws SQLException {
-        if (key.isIndexBased()) {
-            return base.getObject(key.getIndex());
+        Object keyValue = key.getValue();
+        if (keyValue instanceof Integer) {
+            return base.getObject((Integer) keyValue);
         } else {
-            return base.getObject(key.getName());
+            return base.getObject((String) keyValue);
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("{sql: %s}", sql);
     }
 }
