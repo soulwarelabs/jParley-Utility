@@ -4,7 +4,7 @@
  *
  * File:     Parameter.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.09, 08 April 2014
+ * Revision: 1.10, 15 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -27,8 +27,8 @@ package com.soulwarelabs.jparley.utility;
 
 import java.io.Serializable;
 
+import com.soulwarelabs.jcommons.Box;
 import com.soulwarelabs.jcommons.Optional;
-
 import com.soulwarelabs.jparley.Converter;
 
 /**
@@ -37,14 +37,14 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 08 April 2014
+ * @version 15 April 2014
  */
 public class Parameter implements Serializable {
 
     private @Optional Converter decoder;
     private @Optional Converter encoder;
-    private @Optional Value input;
-    private @Optional Value output;
+    private @Optional Box<Object> input;
+    private @Optional Box<Object> output;
     private @Optional String struct;
     private @Optional Integer type;
 
@@ -114,11 +114,11 @@ public class Parameter implements Serializable {
      *
      * @return boxed input value.
      *
-     * @see Value
+     * @see Box
      *
      * @since v1.0
      */
-    public @Optional Value getInput() {
+    public @Optional Box<Object> getInput() {
         return input;
     }
 
@@ -127,11 +127,11 @@ public class Parameter implements Serializable {
      *
      * @param input boxed input value.
      *
-     * @see Value
+     * @see Box
      *
      * @since v1.0
      */
-    public void setInput(@Optional Value input) {
+    public void setInput(@Optional Box<Object> input) {
         this.input = input;
     }
 
@@ -140,11 +140,11 @@ public class Parameter implements Serializable {
      *
      * @return boxed output value.
      *
-     * @see Value
+     * @see Box
      *
      * @since v1.0
      */
-    public @Optional Value getOutput() {
+    public @Optional Box<Object> getOutput() {
         return output;
     }
 
@@ -153,11 +153,11 @@ public class Parameter implements Serializable {
      *
      * @param output boxed output value.
      *
-     * @see Value
+     * @see Box
      *
      * @since v1.0
      */
-    public void setOutput(@Optional Value output) {
+    public void setOutput(@Optional Box<Object> output) {
         this.output = output;
     }
 

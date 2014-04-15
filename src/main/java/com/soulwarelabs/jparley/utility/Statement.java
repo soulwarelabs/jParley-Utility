@@ -4,7 +4,7 @@
  *
  * File:     Statement.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.06, 08 April 2014
+ * Revision: 1.07, 15 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -39,7 +39,7 @@ import com.soulwarelabs.jcommons.Optional;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 08 April 2014
+ * @version 15 April 2014
  */
 public class Statement {
 
@@ -142,24 +142,21 @@ public class Statement {
      * @param type parameter SQL type code.
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @see Key
-     *
      * @since v1.0
      */
-    public void input(Key key, @Optional Object value, @Optional Integer type)
+    public void input(Object key, @Optional Object value, @Optional Integer type)
             throws SQLException {
-        Object keyValue = key.getValue();
-        if (keyValue instanceof Integer) {
+        if (key instanceof Integer) {
             if (type == null) {
-                base.setObject((Integer) keyValue, value);
+                base.setObject((Integer) key, value);
             } else {
-                base.setObject((Integer) keyValue, value, type);
+                base.setObject((Integer) key, value, type);
             }
         } else {
             if (type == null) {
-                base.setObject((String) keyValue, value);
+                base.setObject((String) key, value);
             } else {
-                base.setObject((String) keyValue, value, type);
+                base.setObject((String) key, value, type);
             }
         }
     }
@@ -172,24 +169,21 @@ public class Statement {
      * @param struct parameter structured type name.
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @see Key
-     *
      * @since v1.0
      */
-    public void output(Key key, int type, @Optional String struct)
+    public void output(Object key, int type, @Optional String struct)
             throws SQLException {
-        Object keyValue = key.getValue();
-        if (keyValue instanceof Integer) {
+        if (key instanceof Integer) {
             if (struct == null) {
-                base.registerOutParameter((Integer) keyValue, type);
+                base.registerOutParameter((Integer) key, type);
             } else {
-                base.registerOutParameter((Integer) keyValue, type, struct);
+                base.registerOutParameter((Integer) key, type, struct);
             }
         } else {
             if (struct == null) {
-                base.registerOutParameter((String) keyValue, type);
+                base.registerOutParameter((String) key, type);
             } else {
-                base.registerOutParameter((String) keyValue, type, struct);
+                base.registerOutParameter((String) key, type, struct);
             }
         }
     }
@@ -201,16 +195,13 @@ public class Statement {
      * @return parameter value.
      * @throws SQLException if error occurs while reading parameter value.
      *
-     * @see Key
-     *
      * @since v1.0
      */
-    public @Optional Object read(Key key) throws SQLException {
-        Object keyValue = key.getValue();
-        if (keyValue instanceof Integer) {
-            return base.getObject((Integer) keyValue);
+    public @Optional Object read(Object key) throws SQLException {
+        if (key instanceof Integer) {
+            return base.getObject((Integer) key);
         } else {
-            return base.getObject((String) keyValue);
+            return base.getObject((String) key);
         }
     }
 }

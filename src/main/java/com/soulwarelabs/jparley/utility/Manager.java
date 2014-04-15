@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.11, 15 April 2014
+ * Revision: 1.12, 15 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -32,7 +32,6 @@ import java.util.Map;
 
 import com.soulwarelabs.jcommons.Box;
 import com.soulwarelabs.jcommons.Optional;
-
 import com.soulwarelabs.jparley.Converter;
 
 /**
@@ -45,7 +44,7 @@ import com.soulwarelabs.jparley.Converter;
  */
 public class Manager {
 
-    private Map<Key, Parameter> mappings;
+    private Map<Object, Parameter> mappings;
 
     /**
      * Creates a new instance of SQL data manager.
@@ -53,7 +52,7 @@ public class Manager {
      * @since v1.0
      */
     public Manager() {
-        mappings = new LinkedHashMap<Key, Parameter>();
+        mappings = new LinkedHashMap<Object, Parameter>();
     }
 
     /**
@@ -62,12 +61,11 @@ public class Manager {
      * @param key parameter key.
      * @return registered parameter.
      *
-     * @see Key
      * @see Parameter
      *
      * @since v1.0
      */
-    public @Optional Parameter getParameter(Key key) {
+    public @Optional Parameter getParameter(Object key) {
         return mappings.get(key);
     }
 
@@ -92,7 +90,7 @@ public class Manager {
     public StringBuilder getPrintedState() {
         int index = 1;
         StringBuilder result = new StringBuilder();
-        for (Key key : mappings.keySet()) {
+        for (Object key : mappings.keySet()) {
             result.append(String.format("%s = %s", key, mappings.get(key)));
             if (index < mappings.size()) {
                 result.append(", ");
@@ -110,14 +108,13 @@ public class Manager {
      * @param type subroutine parameter SQL type code.
      * @param encoder a converter for SQL data encoding.
      *
+     * @see Box
      * @see Converter
-     * @see Key
-     * @see Value
      *
      * @since v1.0
      */
-    public void in(Key key, @Optional Value value, @Optional Integer type,
-            @Optional Converter encoder) {
+    public void in(Object key, @Optional Box<Object> value,
+            @Optional Integer type, @Optional Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(value);
         parameter.setType(type);
@@ -134,15 +131,15 @@ public class Manager {
      * @param decoder a converter for SQL data decoding.
      * @return an output value container.
      *
+     * @see Box
      * @see Converter
-     * @see Key
      *
      * @since v1.0
      */
-    public Box out(Key key, int type, @Optional String struct,
+    public Box<?> out(Object key, int type, @Optional String struct,
             @Optional Converter decoder) {
         Parameter parameter = new Parameter();
-        parameter.setOutput(new Value());
+        parameter.setOutput(new Box<Object>());
         parameter.setType(type);
         parameter.setStruct(struct);
         parameter.setDecoder(decoder);
@@ -163,7 +160,7 @@ public class Manager {
      */
     public void parseAll(Connection connection, Statement statement)
             throws SQLException {
-        for (Key key : mappings.keySet()) {
+        for (Object key : mappings.keySet()) {
             Parameter parameter = mappings.get(key);
             if (parameter.getOutput() != null) {
                 Object output = statement.read(key);
@@ -181,11 +178,9 @@ public class Manager {
      *
      * @param key parameter key.
      *
-     * @see Key
-     *
      * @since v1.0
      */
-    public void remove(Key key) {
+    public void remove(Object key) {
         mappings.remove(key);
     }
 
@@ -212,7 +207,7 @@ public class Manager {
      */
     public void setupAll(Connection connection, Statement statement)
             throws SQLException {
-        for (Key key : mappings.keySet()) {
+        for (Object key : mappings.keySet()) {
             Parameter parameter = mappings.get(key);
             if (parameter.getInput() != null) {
                 Object value = parameter.getInput().getValue();
@@ -230,7 +225,7 @@ public class Manager {
         }
     }
 
-    private Parameter merge(Key key, Parameter parameter) {
+    private Parameter merge(Object key, Parameter parameter) {
         Parameter result = mappings.get(key);
         if (result == null) {
             mappings.put(key, parameter);
