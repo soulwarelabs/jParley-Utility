@@ -4,7 +4,7 @@
  *
  * File:     Value.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.01, 08 April 2014
+ * Revision: 1.02, 15 April 2014
  * Created:  07 February 2014
  * Author:   Ilya Gubarev
  *
@@ -26,6 +26,7 @@
 package com.soulwarelabs.jparley.utility;
 
 import com.soulwarelabs.jcommons.Box;
+import com.soulwarelabs.jcommons.Optional;
 
 /**
  * Parameter value container.
@@ -35,7 +36,7 @@ import com.soulwarelabs.jcommons.Box;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 08 April 2014
+ * @version 15 April 2014
  */
 public class Value extends Box<Object> {
 
@@ -55,7 +56,7 @@ public class Value extends Box<Object> {
      *
      * @since v1.0
      */
-    public Value(Object value) {
+    public Value(@Optional Object value) {
         super(value);
     }
 }
