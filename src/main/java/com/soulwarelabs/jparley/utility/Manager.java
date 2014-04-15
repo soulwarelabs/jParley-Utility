@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.10, 09 April 2014
+ * Revision: 1.11, 15 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -41,7 +41,7 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 08 April 2014
+ * @version 15 April 2014
  */
 public class Manager {
 
@@ -116,7 +116,7 @@ public class Manager {
      *
      * @since v1.0
      */
-    public void input(Key key, @Optional Value value, @Optional Integer type,
+    public void in(Key key, @Optional Value value, @Optional Integer type,
             @Optional Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(value);
@@ -139,7 +139,7 @@ public class Manager {
      *
      * @since v1.0
      */
-    public Box output(Key key, int type, @Optional String struct,
+    public Box out(Key key, int type, @Optional String struct,
             @Optional Converter decoder) {
         Parameter parameter = new Parameter();
         parameter.setOutput(new Value());
