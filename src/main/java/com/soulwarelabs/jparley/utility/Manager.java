@@ -113,8 +113,8 @@ public class Manager {
      *
      * @since v1.0
      */
-    public void in(Object key, @Optional Box<Object> value,
-            @Optional Integer type, @Optional Converter encoder) {
+    public void in(Object key, @Optional Box<?> value, @Optional Integer type,
+            @Optional Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(value);
         parameter.setType(type);
@@ -136,7 +136,7 @@ public class Manager {
      *
      * @since v1.0
      */
-    public Box<?> out(Object key, int type, @Optional String struct,
+    public Box<Object> out(Object key, int type, @Optional String struct,
             @Optional Converter decoder) {
         Parameter parameter = new Parameter();
         parameter.setOutput(new Box<Object>());

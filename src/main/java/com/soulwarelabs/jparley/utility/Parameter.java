@@ -43,7 +43,7 @@ public class Parameter implements Serializable {
 
     private @Optional Converter decoder;
     private @Optional Converter encoder;
-    private @Optional Box<Object> input;
+    private @Optional Box<?> input;
     private @Optional Box<Object> output;
     private @Optional String struct;
     private @Optional Integer type;
@@ -118,7 +118,7 @@ public class Parameter implements Serializable {
      *
      * @since v1.0
      */
-    public @Optional Box<Object> getInput() {
+    public @Optional Box<?> getInput() {
         return input;
     }
 
@@ -131,7 +131,7 @@ public class Parameter implements Serializable {
      *
      * @since v1.0
      */
-    public void setInput(@Optional Box<Object> input) {
+    public void setInput(@Optional Box<?> input) {
         this.input = input;
     }
 
