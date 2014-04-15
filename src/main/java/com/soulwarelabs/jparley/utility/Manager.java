@@ -70,17 +70,6 @@ public class Manager {
     }
 
     /**
-     * Gets total number of registered parameters.
-     *
-     * @return number of parameters.
-     *
-     * @since v1.0
-     */
-    public int getParametersCount() {
-        return mappings.size();
-    }
-
-    /**
      * Gets a text view of the inner state.
      *
      * @return printed state.
@@ -98,6 +87,17 @@ public class Manager {
             index++;
         }
         return result;
+    }
+
+    /**
+     * Gets total number of registered parameters.
+     *
+     * @return number of parameters.
+     *
+     * @since v1.0
+     */
+    public int getTotal() {
+        return mappings.size();
     }
 
     /**
