@@ -166,7 +166,7 @@ public class Manager {
                 Object output = statement.read(key);
                 Converter decoder = parameter.getDecoder();
                 if (decoder != null) {
-                    output = decoder.process(connection, output);
+                    output = decoder.perform(connection, output);
                 }
                 parameter.getOutput().setValue(output);
             }
@@ -213,7 +213,7 @@ public class Manager {
                 Object value = parameter.getInput().getValue();
                 Converter encoder = parameter.getEncoder();
                 if (encoder != null) {
-                    value = encoder.process(connection, value);
+                    value = encoder.perform(connection, value);
                 }
                 statement.input(key, value, parameter.getType());
             }
