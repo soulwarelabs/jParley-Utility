@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.12, 15 April 2014
+ * Revision: 1.13, 16 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.soulwarelabs.jcommons.Box;
-import com.soulwarelabs.jcommons.Optional;
+
 import com.soulwarelabs.jparley.Converter;
 
 /**
@@ -40,7 +40,7 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 16 April 2014
  */
 public class Manager {
 
@@ -59,13 +59,13 @@ public class Manager {
      * Gets registered parameter by specified key.
      *
      * @param key parameter key.
-     * @return registered parameter.
+     * @return registered parameter (optional).
      *
      * @see Parameter
      *
      * @since v1.0
      */
-    public @Optional Parameter getParameter(Object key) {
+    public Parameter getParameter(Object key) {
         return mappings.get(key);
     }
 
@@ -105,16 +105,15 @@ public class Manager {
      *
      * @param key subroutine parameter key.
      * @param value subroutine parameter initial value.
-     * @param type subroutine parameter SQL type code.
-     * @param encoder a converter for SQL data encoding.
+     * @param type subroutine parameter SQL type code (optional).
+     * @param encoder a converter for SQL data encoding (optional).
      *
      * @see Box
      * @see Converter
      *
      * @since v1.0
      */
-    public void in(Object key, @Optional Box<?> value, @Optional Integer type,
-            @Optional Converter encoder) {
+    public void in(Object key, Box<?> value, Integer type, Converter encoder) {
         Parameter parameter = new Parameter();
         parameter.setInput(value);
         parameter.setType(type);
@@ -127,8 +126,8 @@ public class Manager {
      *
      * @param key subroutine parameter key.
      * @param type subroutine parameter SQL type code.
-     * @param struct a name of parameter structured type.
-     * @param decoder a converter for SQL data decoding.
+     * @param struct a name of parameter structured type (optional).
+     * @param decoder a converter for SQL data decoding (optional).
      * @return an output value container.
      *
      * @see Box
@@ -136,8 +135,8 @@ public class Manager {
      *
      * @since v1.0
      */
-    public Box<Object> out(Object key, int type, @Optional String struct,
-            @Optional Converter decoder) {
+    public Box<Object> out(Object key, int type, String struct,
+            Converter decoder) {
         Parameter parameter = new Parameter();
         parameter.setOutput(new Box<Object>());
         parameter.setType(type);

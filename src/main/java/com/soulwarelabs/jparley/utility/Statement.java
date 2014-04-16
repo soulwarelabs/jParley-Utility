@@ -4,7 +4,7 @@
  *
  * File:     Statement.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.07, 15 April 2014
+ * Revision: 1.08, 16 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -29,8 +29,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.soulwarelabs.jcommons.Optional;
-
 /**
  * Extended SQL callable statement.
  *
@@ -39,7 +37,7 @@ import com.soulwarelabs.jcommons.Optional;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 16 April 2014
  */
 public class Statement {
 
@@ -138,13 +136,13 @@ public class Statement {
      * Registers an input parameter into the statement.
      *
      * @param key parameter key.
-     * @param value parameter initial value.
-     * @param type parameter SQL type code.
+     * @param value parameter initial value (optional).
+     * @param type parameter SQL type code (optional).
      * @throws SQLException if error occurs while registering parameter.
      *
      * @since v1.0
      */
-    public void input(Object key, @Optional Object value, @Optional Integer type)
+    public void input(Object key, Object value, Integer type)
             throws SQLException {
         if (key instanceof Integer) {
             if (type == null) {
@@ -166,12 +164,12 @@ public class Statement {
      *
      * @param key parameter key.
      * @param type parameter SQL type code.
-     * @param struct parameter structured type name.
+     * @param struct parameter structured type name (optional).
      * @throws SQLException if error occurs while registering parameter.
      *
      * @since v1.0
      */
-    public void output(Object key, int type, @Optional String struct)
+    public void output(Object key, int type, String struct)
             throws SQLException {
         if (key instanceof Integer) {
             if (struct == null) {
@@ -192,12 +190,12 @@ public class Statement {
      * Reads an output parameter value from the statement.
      *
      * @param key parameter key.
-     * @return parameter value.
+     * @return parameter value (optional).
      * @throws SQLException if error occurs while reading parameter value.
      *
      * @since v1.0
      */
-    public @Optional Object read(Object key) throws SQLException {
+    public Object read(Object key) throws SQLException {
         if (key instanceof Integer) {
             return base.getObject((Integer) key);
         } else {

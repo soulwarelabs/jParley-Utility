@@ -4,7 +4,7 @@
  *
  * File:     Parameter.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.10, 15 April 2014
+ * Revision: 1.11, 16 April 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -28,7 +28,7 @@ package com.soulwarelabs.jparley.utility;
 import java.io.Serializable;
 
 import com.soulwarelabs.jcommons.Box;
-import com.soulwarelabs.jcommons.Optional;
+
 import com.soulwarelabs.jparley.Converter;
 
 /**
@@ -37,16 +37,16 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 16 April 2014
  */
 public class Parameter implements Serializable {
 
-    private @Optional Converter decoder;
-    private @Optional Converter encoder;
-    private @Optional Box<?> input;
-    private @Optional Box<Object> output;
-    private @Optional String struct;
-    private @Optional Integer type;
+    private Converter decoder;
+    private Converter encoder;
+    private Box<?> input;
+    private Box<Object> output;
+    private String struct;
+    private Integer type;
 
     /**
      * Creates a new instance of SQL subroutine parameter.
@@ -60,148 +60,148 @@ public class Parameter implements Serializable {
     /**
      * Gets an SQL output data decoder of the parameter.
      *
-     * @return SQL output data decoder.
+     * @return SQL output data decoder (optional).
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public @Optional Converter getDecoder() {
+    public Converter getDecoder() {
         return decoder;
     }
 
     /**
      * Sets a new SQL output data decoder for the parameter.
      *
-     * @param decoder SQL output data decoder.
+     * @param decoder SQL output data decoder (optional).
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public void setDecoder(@Optional Converter decoder) {
+    public void setDecoder(Converter decoder) {
         this.decoder = decoder;
     }
 
     /**
      * Gets an SQL input data encoder of the parameter.
      *
-     * @return SQL input data encoder.
+     * @return SQL input data encoder (optional).
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public @Optional Converter getEncoder() {
+    public Converter getEncoder() {
         return encoder;
     }
 
     /**
      * Sets a new SQL input data encoder for the parameter.
      *
-     * @param encoder SQL input data encoder.
+     * @param encoder SQL input data encoder (optional).
      *
      * @see Converter
      *
      * @since v1.0
      */
-    public void setEncoder(@Optional Converter encoder) {
+    public void setEncoder(Converter encoder) {
         this.encoder = encoder;
     }
 
     /**
      * Gets a boxed input value of the parameter.
      *
-     * @return boxed input value.
+     * @return boxed input value (optional).
      *
      * @see Box
      *
      * @since v1.0
      */
-    public @Optional Box<?> getInput() {
+    public Box<?> getInput() {
         return input;
     }
 
     /**
      * Sets a new boxed input value for the parameter.
      *
-     * @param input boxed input value.
+     * @param input boxed input value (optional).
      *
      * @see Box
      *
      * @since v1.0
      */
-    public void setInput(@Optional Box<?> input) {
+    public void setInput(Box<?> input) {
         this.input = input;
     }
 
     /**
      * Gets a boxed output value of the parameter.
      *
-     * @return boxed output value.
+     * @return boxed output value (optional).
      *
      * @see Box
      *
      * @since v1.0
      */
-    public @Optional Box<Object> getOutput() {
+    public Box<Object> getOutput() {
         return output;
     }
 
     /**
      * Sets a new boxed output value for the parameter.
      *
-     * @param output boxed output value.
+     * @param output boxed output value (optional).
      *
      * @see Box
      *
      * @since v1.0
      */
-    public void setOutput(@Optional Box<Object> output) {
+    public void setOutput(Box<Object> output) {
         this.output = output;
     }
 
     /**
      * Gets an SQL structure name of the parameter.
      *
-     * @return SQL structure name.
+     * @return SQL structure name (optional).
      *
      * @since v1.0
      */
-    public @Optional String getStruct() {
+    public String getStruct() {
         return struct;
     }
 
     /**
      * Sets a new SQL structure name for the parameter.
      *
-     * @param struct SQL structure name.
+     * @param struct SQL structure name (optional).
      *
      * @since v1.0
      */
-    public void setStruct(@Optional String struct) {
+    public void setStruct(String struct) {
         this.struct = struct;
     }
 
     /**
      * Gets an SQL type code of the parameter.
      *
-     * @return SQL type code.
+     * @return SQL type code (optional).
      *
      * @since v1.0
      */
-    public @Optional Integer getType() {
+    public Integer getType() {
         return type;
     }
 
     /**
      * Sets a new SQL type code for the parameter.
      *
-     * @param type SQL type code.
+     * @param type SQL type code (optional).
      *
      * @since v1.0
      */
-    public void setType(@Optional Integer type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
