@@ -25,76 +25,24 @@
  */
 package com.soulwarelabs.jparley.utility;
 
+import java.io.Serializable;
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Extended SQL callable statement.
- *
- * @see CallableStatement
  *
  * @since v1.0
  *
  * @author Ilya Gubarev
  * @version 16 April 2014
  */
-public class Statement {
-
-    /**
-     * Creates a new callable statement for an SQL function.
-     *
-     * @param connection SQL database connection.
-     * @param name full-qualified name of an SQL subroutine.
-     * @param parametersNumber total number of subroutine parameters.
-     * @return extended callable statement.
-     * @throws SQLException if error occurs while creating statement.
-     *
-     * @see Connection
-     *
-     * @since v1.0
-     */
-    public static Statement createFunction(Connection connection, String name,
-            int parametersNumber) throws SQLException {
-        StringBuilder parameters = createParameterString(parametersNumber - 1);
-        String sql = String.format("{? = call %s(%s)}", name, parameters);
-        return new Statement(connection.prepareCall(sql), sql);
-    }
-
-    /**
-     * Creates a new callable statement for an SQL procedure.
-     *
-     * @param connection SQL database connection.
-     * @param name full-qualified name of an SQL subroutine.
-     * @param parametersNumber total number of subroutine parameters.
-     * @return extended callable statement.
-     * @throws SQLException if error occurs while creating statement.
-     *
-     * @see Connection
-     *
-     * @since v1.0
-     */
-    public static Statement createProcedure(Connection connection, String name,
-            int parametersNumber) throws SQLException {
-        StringBuilder parameters = createParameterString(parametersNumber);
-        String sql = String.format("{call %s(%s)}", name, parameters);
-        return new Statement(connection.prepareCall(sql), sql);
-    }
-
-    private static StringBuilder createParameterString(int number) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 1; i <= number; i++) {
-            result.append(i < number ? "?," : "?");
-        }
-        return result;
-    }
+public class Statement implements Serializable {
 
     private CallableStatement base;
-    private String sql;
 
-    private Statement(CallableStatement base, String sql) throws SQLException {
+    public Statement(CallableStatement base) throws SQLException {
         this.base = base;
-        this.sql = sql;
     }
 
     /**
@@ -111,14 +59,16 @@ public class Statement {
     }
 
     /**
-     * Gets an sql string of the statement.
+     * Setss a new underlying SQL callable statement.
      *
-     * @return sql string.
+     * @param base underlying callable statement.
+     *
+     * @see CallableStatement
      *
      * @since v1.0
      */
-    public String getSql() {
-        return sql;
+    public void setBaseStatement(CallableStatement base) {
+        this.base = base;
     }
 
     /**
@@ -142,8 +92,7 @@ public class Statement {
      *
      * @since v1.0
      */
-    public void input(Object key, Object value, Integer type)
-            throws SQLException {
+    public void in(Object key, Object value, Integer type) throws SQLException {
         if (key instanceof Integer) {
             if (type == null) {
                 base.setObject((Integer) key, value);
@@ -169,8 +118,7 @@ public class Statement {
      *
      * @since v1.0
      */
-    public void output(Object key, int type, String struct)
-            throws SQLException {
+    public void out(Object key, int type, String struct) throws SQLException {
         if (key instanceof Integer) {
             if (struct == null) {
                 base.registerOutParameter((Integer) key, type);

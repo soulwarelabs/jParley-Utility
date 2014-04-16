@@ -207,12 +207,12 @@ public class Manager implements Serializable {
                 if (encoder != null) {
                     value = encoder.perform(connection, value);
                 }
-                statement.input(key, value, parameter.getType());
+                statement.in(key, value, parameter.getType());
             }
             if (parameter.getOutput() != null) {
                 Integer sqlType = parameter.getType();
                 String structName = parameter.getStruct();
-                statement.output(key, sqlType, structName);
+                statement.out(key, sqlType, structName);
             }
         }
     }
