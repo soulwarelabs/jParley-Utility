@@ -25,8 +25,10 @@
  */
 package com.soulwarelabs.jparley.utility;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -42,7 +44,7 @@ import com.soulwarelabs.jparley.Converter;
  * @author Ilya Gubarev
  * @version 16 April 2014
  */
-public class Manager {
+public class Manager implements Serializable {
 
     private Map<Object, Parameter> mappings;
 
@@ -53,6 +55,17 @@ public class Manager {
      */
     public Manager() {
         mappings = new LinkedHashMap<Object, Parameter>();
+    }
+
+    /**
+     * Gets all registered parameter keys.
+     *
+     * @return registered keys.
+     *
+     * @since v1.0
+     */
+    public Iterable<Object> getKeys() {
+        return new HashSet<Object>(mappings.keySet());
     }
 
     /**
@@ -67,26 +80,6 @@ public class Manager {
      */
     public Parameter getParameter(Object key) {
         return mappings.get(key);
-    }
-
-    /**
-     * Gets a text view of the inner state.
-     *
-     * @return printed state.
-     *
-     * @since v1.0
-     */
-    public StringBuilder getPrintedState() {
-        int index = 1;
-        StringBuilder result = new StringBuilder();
-        for (Object key : mappings.keySet()) {
-            result.append(String.format("%s = %s", key, mappings.get(key)));
-            if (index < mappings.size()) {
-                result.append(", ");
-            }
-            index++;
-        }
-        return result;
     }
 
     /**
