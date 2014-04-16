@@ -204,9 +204,4 @@ public class Parameter implements Serializable {
     public void setType(Integer type) {
         this.type = type;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s/%s (%s/%s)", input, output, type, struct);
-    }
 }
