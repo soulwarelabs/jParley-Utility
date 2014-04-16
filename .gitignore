@@ -1,16 +1,16 @@
-# Java compiled classes
+# Java compiled classes:
 *.class
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files
+# Java packages:
 *.jar
 *.war
 *.ear
 
-# Virtual machine crash logs
+# Java Mobile Tools files:
+.mtj.tmp/
+
+# Java VM crashlogs:
 hs_err_pid*
 
-# Maven target folder
+# Maven target directory:
 /target/
