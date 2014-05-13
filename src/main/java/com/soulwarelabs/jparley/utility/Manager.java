@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.13, 16 April 2014
+ * Revision: 1.14, 13 May 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -42,7 +42,7 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 13 May 2014
  */
 public class Manager implements Serializable {
 
@@ -225,10 +225,14 @@ public class Manager implements Serializable {
         } else {
             result.setDecoder(parameter.getDecoder());
             result.setEncoder(parameter.getEncoder());
-            result.setInput(parameter.getInput());
-            result.setOutput(parameter.getOutput());
             result.setStruct(parameter.getStruct());
             result.setType(parameter.getType());
+            if (parameter.getInput() != null) {
+                result.setInput(parameter.getInput());
+            }
+            if (parameter.getOutput() != null) {
+                result.setOutput(parameter.getOutput());
+            }
         }
         return result;
     }
