@@ -4,7 +4,7 @@
  *
  * File:     Statement.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.08, 16 April 2014
+ * Revision: 1.09, 11 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -32,16 +32,25 @@ import java.sql.SQLException;
 /**
  * Extended SQL callable statement.
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public class Statement implements Serializable {
 
     private CallableStatement base;
 
-    public Statement(CallableStatement base) throws SQLException {
+    /**
+     * Creates a new instance of statement.
+     *
+     * @param base an underlying SQL callable statement.
+     *
+     * @see CallableStatement
+     *
+     * @since v1.0.0
+     */
+    public Statement(CallableStatement base) {
         this.base = base;
     }
 
@@ -52,7 +61,7 @@ public class Statement implements Serializable {
      *
      * @see CallableStatement
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public CallableStatement getBaseStatement() {
         return base;
@@ -65,7 +74,7 @@ public class Statement implements Serializable {
      *
      * @see CallableStatement
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setBaseStatement(CallableStatement base) {
         this.base = base;
@@ -76,7 +85,7 @@ public class Statement implements Serializable {
      *
      * @throws SQLException if error occurs while executing the statement.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void execute() throws SQLException {
         base.execute();
@@ -90,7 +99,7 @@ public class Statement implements Serializable {
      * @param type parameter SQL type code (optional).
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void in(Object key, Object value, Integer type) throws SQLException {
         if (key instanceof Integer) {
@@ -116,7 +125,7 @@ public class Statement implements Serializable {
      * @param struct parameter structured type name (optional).
      * @throws SQLException if error occurs while registering parameter.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void out(Object key, int type, String struct) throws SQLException {
         if (key instanceof Integer) {
@@ -141,7 +150,7 @@ public class Statement implements Serializable {
      * @return parameter value (optional).
      * @throws SQLException if error occurs while reading parameter value.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Object read(Object key) throws SQLException {
         if (key instanceof Integer) {
