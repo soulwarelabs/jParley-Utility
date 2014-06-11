@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.14, 13 May 2014
+ * Revision: 1.15, 11 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -28,30 +28,30 @@ package com.soulwarelabs.jparley.utility;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.soulwarelabs.jcommons.Box;
-
 import com.soulwarelabs.jparley.Converter;
 
 /**
  * SQL data manager.
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 13 May 2014
+ * @version 11 June 2014
  */
 public class Manager implements Serializable {
 
     private Map<Object, Parameter> mappings;
 
     /**
-     * Creates a new instance of SQL data manager.
+     * Creates a new instance of manager.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Manager() {
         mappings = new LinkedHashMap<Object, Parameter>();
@@ -62,9 +62,9 @@ public class Manager implements Serializable {
      *
      * @return registered keys.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
-    public Iterable<Object> getKeys() {
+    public Collection<Object> getKeys() {
         return new HashSet<Object>(mappings.keySet());
     }
 
@@ -76,7 +76,7 @@ public class Manager implements Serializable {
      *
      * @see Parameter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Parameter getParameter(Object key) {
         return mappings.get(key);
@@ -87,7 +87,7 @@ public class Manager implements Serializable {
      *
      * @return number of parameters.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public int getTotal() {
         return mappings.size();
@@ -104,7 +104,7 @@ public class Manager implements Serializable {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void in(Object key, Box<?> value, Integer type, Converter encoder) {
         Parameter parameter = new Parameter();
@@ -126,7 +126,7 @@ public class Manager implements Serializable {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Box<Object> out(Object key, int type, String struct,
             Converter decoder) {
@@ -148,7 +148,7 @@ public class Manager implements Serializable {
      * @see Connection
      * @see Statement
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void parseAll(Connection connection, Statement statement)
             throws SQLException {
@@ -170,7 +170,7 @@ public class Manager implements Serializable {
      *
      * @param key parameter key.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void remove(Object key) {
         mappings.remove(key);
@@ -179,7 +179,7 @@ public class Manager implements Serializable {
     /**
      * Removes all registered parameters.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void removeAll() {
         mappings.clear();
@@ -195,7 +195,7 @@ public class Manager implements Serializable {
      * @see Connection
      * @see Statement
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setupAll(Connection connection, Statement statement)
             throws SQLException {
