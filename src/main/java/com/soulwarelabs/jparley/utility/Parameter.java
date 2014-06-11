@@ -4,7 +4,7 @@
  *
  * File:     Parameter.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.11, 16 April 2014
+ * Revision: 1.12, 11 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -28,16 +28,15 @@ package com.soulwarelabs.jparley.utility;
 import java.io.Serializable;
 
 import com.soulwarelabs.jcommons.Box;
-
 import com.soulwarelabs.jparley.Converter;
 
 /**
  * SQL subroutine parameter.
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public class Parameter implements Serializable {
 
@@ -51,7 +50,7 @@ public class Parameter implements Serializable {
     /**
      * Creates a new instance of SQL subroutine parameter.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Parameter() {
 
@@ -64,7 +63,7 @@ public class Parameter implements Serializable {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Converter getDecoder() {
         return decoder;
@@ -77,7 +76,7 @@ public class Parameter implements Serializable {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setDecoder(Converter decoder) {
         this.decoder = decoder;
@@ -90,7 +89,7 @@ public class Parameter implements Serializable {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Converter getEncoder() {
         return encoder;
@@ -103,7 +102,7 @@ public class Parameter implements Serializable {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setEncoder(Converter encoder) {
         this.encoder = encoder;
@@ -116,7 +115,7 @@ public class Parameter implements Serializable {
      *
      * @see Box
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Box<?> getInput() {
         return input;
@@ -129,7 +128,7 @@ public class Parameter implements Serializable {
      *
      * @see Box
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setInput(Box<?> input) {
         this.input = input;
@@ -142,7 +141,7 @@ public class Parameter implements Serializable {
      *
      * @see Box
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Box<Object> getOutput() {
         return output;
@@ -155,7 +154,7 @@ public class Parameter implements Serializable {
      *
      * @see Box
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setOutput(Box<Object> output) {
         this.output = output;
@@ -166,7 +165,7 @@ public class Parameter implements Serializable {
      *
      * @return SQL structure name (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public String getStruct() {
         return struct;
@@ -177,7 +176,7 @@ public class Parameter implements Serializable {
      *
      * @param struct SQL structure name (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setStruct(String struct) {
         this.struct = struct;
@@ -188,7 +187,7 @@ public class Parameter implements Serializable {
      *
      * @return SQL type code (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Integer getType() {
         return type;
@@ -199,7 +198,7 @@ public class Parameter implements Serializable {
      *
      * @param type SQL type code (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setType(Integer type) {
         this.type = type;
