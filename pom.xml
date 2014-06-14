@@ -6,7 +6,7 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.05, 11 June 2014
+    Revision: 1.06, 14 June 2014
     Created:  09 February 2014
     Author:   Ilya Gubarev
 
@@ -40,7 +40,7 @@
 
     <groupId>com.soulwarelabs.jparley</groupId>
     <artifactId>jparley-utility</artifactId>
-    <version>1.0.0-alpha</version>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
 
     <name>jParley-Utility</name>
@@ -75,9 +75,7 @@
     </licenses>
 
     <scm>
-        <connection>
-            scm:git:git@github.com:soulwarelabs/jparley-utility.git
-        </connection>
+        <connection>scm:git:git@github.com:soulwarelabs/jparley-utility.git</connection>
         <url>git@github.com:soulwarelabs/jparley-utility.git</url>
     </scm>
 
@@ -85,7 +83,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <versions.java.source>1.5</versions.java.source>
         <versions.java.target>1.5</versions.java.target>
-        <versions.libs.jparley.api>1.0.0-alpha</versions.libs.jparley.api>
+        <versions.libs.jparley.api>1.0.0-beta</versions.libs.jparley.api>
         <versions.plugins.compiler>3.1</versions.plugins.compiler>
         <versions.plugins.gpg>1.5</versions.plugins.gpg>
         <versions.plugins.javadoc>2.9.1</versions.plugins.javadoc>
