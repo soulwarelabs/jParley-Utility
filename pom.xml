@@ -6,7 +6,7 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.06, 14 June 2014
+    Revision: 1.07, 16 June 2014
     Created:  09 February 2014
     Author:   Ilya Gubarev
 
@@ -40,7 +40,7 @@
 
     <groupId>com.soulwarelabs.jparley</groupId>
     <artifactId>jparley-utility</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-beta1</version>
     <packaging>jar</packaging>
 
     <name>jParley-Utility</name>

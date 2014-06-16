@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.15, 11 June 2014
+ * Revision: 1.16, 16 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -29,9 +29,11 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import com.soulwarelabs.jcommons.Box;
 import com.soulwarelabs.jparley.Converter;
@@ -42,11 +44,12 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 16 June 2014
  */
 public class Manager implements Serializable {
 
-    private Map<Object, Parameter> mappings;
+    private Map<Object, Parameter> indexed;
+    private Map<Object, Parameter> named;
 
     /**
      * Creates a new instance of manager.
@@ -54,7 +57,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Manager() {
-        mappings = new LinkedHashMap<Object, Parameter>();
+        indexed = new TreeMap<Object, Parameter>();
+        named = new LinkedHashMap<Object, Parameter>();
     }
 
     /**
@@ -65,7 +69,10 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Collection<Object> getKeys() {
-        return new HashSet<Object>(mappings.keySet());
+        Set<Object> result = new LinkedHashSet<Object>();
+        result.addAll(indexed.keySet());
+        result.addAll(named.keySet());
+        return result;
     }
 
     /**
@@ -79,7 +86,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Parameter getParameter(Object key) {
-        return mappings.get(key);
+        Parameter result = indexed.get(key);
+        return result != null ? result : named.get(key);
     }
 
     /**
@@ -90,7 +98,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public int getTotal() {
-        return mappings.size();
+        return indexed.size() + named.size();
     }
 
     /**
@@ -152,8 +160,11 @@ public class Manager implements Serializable {
      */
     public void parseAll(Connection connection, Statement statement)
             throws SQLException {
-        for (Object key : mappings.keySet()) {
-            Parameter parameter = mappings.get(key);
+        Map<Object, Parameter> params = new LinkedHashMap<Object, Parameter>();
+        params.putAll(indexed);
+        params.putAll(named);
+        for (Object key : params.keySet()) {
+            Parameter parameter = params.get(key);
             if (parameter.getOutput() != null) {
                 Object output = statement.read(key);
                 Converter decoder = parameter.getDecoder();
@@ -173,7 +184,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public void remove(Object key) {
-        mappings.remove(key);
+        indexed.remove(key);
+        named.remove(key);
     }
 
     /**
@@ -182,7 +194,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public void removeAll() {
-        mappings.clear();
+        indexed.clear();
+        named.clear();
     }
 
     /**
@@ -199,8 +212,11 @@ public class Manager implements Serializable {
      */
     public void setupAll(Connection connection, Statement statement)
             throws SQLException {
-        for (Object key : mappings.keySet()) {
-            Parameter parameter = mappings.get(key);
+        Map<Object, Parameter> params = new LinkedHashMap<Object, Parameter>();
+        params.putAll(indexed);
+        params.putAll(named);
+        for (Object key : params.keySet()) {
+            Parameter parameter = params.get(key);
             if (parameter.getInput() != null) {
                 Object value = parameter.getInput().getValue();
                 Converter encoder = parameter.getEncoder();
@@ -218,10 +234,14 @@ public class Manager implements Serializable {
     }
 
     private Parameter merge(Object key, Parameter parameter) {
-        Parameter result = mappings.get(key);
+        Parameter result = getParameter(key);
         if (result == null) {
-            mappings.put(key, parameter);
             result = parameter;
+            if (key instanceof Integer) {
+                indexed.put(key, result);
+            } else {
+                named.put(key, result);
+            }
         } else {
             result.setDecoder(parameter.getDecoder());
             result.setEncoder(parameter.getEncoder());
