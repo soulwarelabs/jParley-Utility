@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.16, 16 June 2014
+ * Revision: 1.18, 17 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -29,11 +29,10 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.soulwarelabs.jcommons.Box;
 import com.soulwarelabs.jparley.Converter;
@@ -44,12 +43,13 @@ import com.soulwarelabs.jparley.Converter;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 June 2014
+ * @version 17 June 2014
  */
 public class Manager implements Serializable {
 
-    private Map<Object, Parameter> indexed;
-    private Map<Object, Parameter> named;
+    private Map<Object, Parameter> mappings;
+    private boolean named;
+    private boolean setup;
 
     /**
      * Creates a new instance of manager.
@@ -57,8 +57,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Manager() {
-        indexed = new TreeMap<Object, Parameter>();
-        named = new LinkedHashMap<Object, Parameter>();
+        mappings = new HashMap<Object, Parameter>();
     }
 
     /**
@@ -69,10 +68,11 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Collection<Object> getKeys() {
-        Set<Object> result = new LinkedHashSet<Object>();
-        result.addAll(indexed.keySet());
-        result.addAll(named.keySet());
-        return result;
+        if (named) {
+            return new LinkedHashSet<Object>(mappings.keySet());
+        } else {
+            return new TreeSet<Object>(mappings.keySet());
+        }
     }
 
     /**
@@ -86,8 +86,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Parameter getParameter(Object key) {
-        Parameter result = indexed.get(key);
-        return result != null ? result : named.get(key);
+        return mappings.get(key);
     }
 
     /**
@@ -98,7 +97,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public int getTotal() {
-        return indexed.size() + named.size();
+        return mappings.size();
     }
 
     /**
@@ -115,6 +114,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public void in(Object key, Box<?> value, Integer type, Converter encoder) {
+        validate(key);
         Parameter parameter = new Parameter();
         parameter.setInput(value);
         parameter.setType(type);
@@ -138,6 +138,7 @@ public class Manager implements Serializable {
      */
     public Box<Object> out(Object key, int type, String struct,
             Converter decoder) {
+        validate(key);
         Parameter parameter = new Parameter();
         parameter.setOutput(new Box<Object>());
         parameter.setType(type);
@@ -160,11 +161,8 @@ public class Manager implements Serializable {
      */
     public void parseAll(Connection connection, Statement statement)
             throws SQLException {
-        Map<Object, Parameter> params = new LinkedHashMap<Object, Parameter>();
-        params.putAll(indexed);
-        params.putAll(named);
-        for (Object key : params.keySet()) {
-            Parameter parameter = params.get(key);
+        for (Object key : getKeys()) {
+            Parameter parameter = mappings.get(key);
             if (parameter.getOutput() != null) {
                 Object output = statement.read(key);
                 Converter decoder = parameter.getDecoder();
@@ -184,8 +182,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public void remove(Object key) {
-        indexed.remove(key);
-        named.remove(key);
+        mappings.remove(key);
+        setup = mappings.isEmpty() ? false : true;
     }
 
     /**
@@ -194,8 +192,8 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public void removeAll() {
-        indexed.clear();
-        named.clear();
+        mappings.clear();
+        setup = false;
     }
 
     /**
@@ -212,11 +210,8 @@ public class Manager implements Serializable {
      */
     public void setupAll(Connection connection, Statement statement)
             throws SQLException {
-        Map<Object, Parameter> params = new LinkedHashMap<Object, Parameter>();
-        params.putAll(indexed);
-        params.putAll(named);
-        for (Object key : params.keySet()) {
-            Parameter parameter = params.get(key);
+        for (Object key : getKeys()) {
+            Parameter parameter = mappings.get(key);
             if (parameter.getInput() != null) {
                 Object value = parameter.getInput().getValue();
                 Converter encoder = parameter.getEncoder();
@@ -237,11 +232,7 @@ public class Manager implements Serializable {
         Parameter result = getParameter(key);
         if (result == null) {
             result = parameter;
-            if (key instanceof Integer) {
-                indexed.put(key, result);
-            } else {
-                named.put(key, result);
-            }
+            mappings.put(key, result);
         } else {
             result.setDecoder(parameter.getDecoder());
             result.setEncoder(parameter.getEncoder());
@@ -255,5 +246,14 @@ public class Manager implements Serializable {
             }
         }
         return result;
+    }
+
+    private void validate(Object key) {
+        if (setup) {
+            if ((named && (key instanceof Integer)) ||
+                    (!named && (key instanceof String))) {
+                throw new RuntimeException("mixing JDBC indeces and names");
+            }
+        }
     }
 }

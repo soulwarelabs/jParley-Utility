@@ -4,7 +4,7 @@
  *
  * File:     Statement.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.09, 11 June 2014
+ * Revision: 1.10, 17 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -35,7 +35,7 @@ import java.sql.SQLException;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 17 June 2014
  */
 public class Statement implements Serializable {
 
@@ -110,9 +110,9 @@ public class Statement implements Serializable {
             }
         } else {
             if (type == null) {
-                base.setObject((String) key, value);
+                base.setObject(key.toString(), value);
             } else {
-                base.setObject((String) key, value, type);
+                base.setObject(key.toString(), value, type);
             }
         }
     }
@@ -136,9 +136,9 @@ public class Statement implements Serializable {
             }
         } else {
             if (struct == null) {
-                base.registerOutParameter((String) key, type);
+                base.registerOutParameter(key.toString(), type);
             } else {
-                base.registerOutParameter((String) key, type, struct);
+                base.registerOutParameter(key.toString(), type, struct);
             }
         }
     }
@@ -156,7 +156,7 @@ public class Statement implements Serializable {
         if (key instanceof Integer) {
             return base.getObject((Integer) key);
         } else {
-            return base.getObject((String) key);
+            return base.getObject(key.toString());
         }
     }
 }
