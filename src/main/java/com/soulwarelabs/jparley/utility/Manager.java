@@ -4,7 +4,7 @@
  *
  * File:     Manager.java
  * Folder:   /.../com/soulwarelabs/jparley/utility
- * Revision: 1.18, 17 June 2014
+ * Revision: 1.19, 17 June 2014
  * Created:  09 February 2014
  * Author:   Ilya Gubarev
  *
@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -57,7 +57,7 @@ public class Manager implements Serializable {
      * @since v1.0.0
      */
     public Manager() {
-        mappings = new HashMap<Object, Parameter>();
+        mappings = new LinkedHashMap<Object, Parameter>();
     }
 
     /**
@@ -250,10 +250,12 @@ public class Manager implements Serializable {
 
     private void validate(Object key) {
         if (setup) {
-            if ((named && (key instanceof Integer)) ||
-                    (!named && (key instanceof String))) {
+            if (named ^ !(key instanceof Integer)) {
                 throw new RuntimeException("mixing JDBC indeces and names");
             }
+        } else {
+            named = !(key instanceof Integer);
+            setup = true;
         }
     }
 }
